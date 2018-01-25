@@ -8,6 +8,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    bcrypt (3.1.11)
     byebug (9.1.0)
     ffi (1.9.18)
     listen (3.1.5)
@@ -27,15 +28,23 @@ GEM
       rack (~> 2.0)
       rack-protection (= 2.0.0)
       tilt (~> 2.0)
+    slim (3.0.8)
+      temple (>= 0.7.6, < 0.9)
+      tilt (>= 1.3.3, < 2.1)
+    sqlite3 (1.3.13)
+    temple (0.8.0)
     tilt (2.0.8)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt
   byebug
   rerun!
   sinatra
+  slim
+  sqlite3
 
 BUNDLED WITH
    1.15.3

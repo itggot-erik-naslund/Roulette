@@ -5,15 +5,12 @@ class App < Sinatra::Base
 	end
 
 
-	get('/register') do
-		slim :register
-	end
-
 	post '/login' do
 		db = SQLite3::Database.new("main.sqlite") 
 		username = params["username"] 
 		password = params["password"]
 		accounts = db.execute("SELECT * FROM login WHERE username=?", username)
+		p accounts
 		account_password = BCrypt::Password.new(accounts[0][2])
 
 		if account_password == password
@@ -43,13 +40,29 @@ class App < Sinatra::Base
 				db.execute("INSERT INTO login('username' , 'password') VALUES(? , ?)", [username,password_encrypted])
 				redirect('/signup_successful')
 
-			rescue 
-				session[:message] = "Username is not available"
-				redirect("/error")
-			end
+			# rescue 
+			# 	session[:message] = "Username is not available"
+			# 	redirect("/error")
+			# end
 		else
 			session[:message] = "Password does not match"
 			redirect("/error")
 		end
+	end
+
+	post '/logout' do 
+		session[:login] = false
+		session[:id] = nil
+		redirect('/')
+	end
+
+	get '/signup_successful' do
+		slim(:signup_successful)
+	end
+
+	get '/error' do
+		slim(:error, locals:{msg:session[:message]})
+	end
+	
 	end
 end
