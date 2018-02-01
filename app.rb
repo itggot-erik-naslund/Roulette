@@ -10,19 +10,24 @@ class App < Sinatra::Base
 		username = params["username"] 
 		password = params["password"]
 		accounts = db.execute("SELECT * FROM login WHERE username=?", username)
-		p accounts
 		account_password = BCrypt::Password.new(accounts[0][2])
 
 		if account_password == password
 			result = db.execute("SELECT id FROM login WHERE username=?", [username]) 
 			session[:id] = accounts[0][0] 
 			session[:login] = true 
+			redirect("/login")
 		elsif password == nil
 			redirect("/error")
 		else
 			session[:login] = false
 		end
 		redirect('/')
+	end
+
+	get'/login' do
+		#Hämta rumdata från DB
+		slim(:login, locals{rooms:rooms})
 	end
 
 	get '/register' do
@@ -40,10 +45,10 @@ class App < Sinatra::Base
 				db.execute("INSERT INTO login('username' , 'password') VALUES(? , ?)", [username,password_encrypted])
 				redirect('/signup_successful')
 
-			# rescue 
-			# 	session[:message] = "Username is not available"
-			# 	redirect("/error")
-			# end
+			 rescue 
+			 	session[:message] = "Username is not available"
+			 	redirect("/error")
+			 end
 		else
 			session[:message] = "Password does not match"
 			redirect("/error")
@@ -64,5 +69,5 @@ class App < Sinatra::Base
 		slim(:error, locals:{msg:session[:message]})
 	end
 	
-	end
+	
 end

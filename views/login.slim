@@ -3,6 +3,17 @@ form class="logout" method="POST" action="/logout"
 
 
     p Welcome
+-rooms.each do |room|
+    form class="room#{room_id}" action="/rooms/room_id"
 
-   
+form class="room1" method="POST" action="/rooms"
+    input type="submit" value="Room 1"
+form class="room2" method="POST" action="/rooms"
+    input type="submit" value="Room 2"
+form class="room3" method="POST" action="/rooms"
+    input type="submit" value="Room 3"
+
+<br>
+
+
     a href="/" BACK
