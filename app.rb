@@ -26,8 +26,9 @@ class App < Sinatra::Base
 	end
 
 	get'/login' do
-		#Hämta rumdata från DB
-		slim(:login, locals{rooms:rooms})
+		db = SQLite3::Database.new("main.sqlite") 
+		rooms = db.execute("SELECT * FROM Room")
+		slim(:login, locals:{rooms:rooms})
 	end
 
 	get '/register' do
@@ -68,6 +69,7 @@ class App < Sinatra::Base
 	get '/error' do
 		slim(:error, locals:{msg:session[:message]})
 	end
+	
 	
 	
 end
